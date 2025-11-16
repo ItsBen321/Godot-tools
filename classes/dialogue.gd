@@ -1,16 +1,11 @@
-##Simple way to turn a RichTextLabel into a Dialogue box.
-##Introduces 3 main functions and 2 signals:
-##[codeblock]
-##Display(String) #display dialogue string
-##Buffer(PackedStringArray) #load a dialogue buffer
-##Next() #display next dialogue string in buffer
+##Simple way to turn a RichTextLabel into a Dialogue box,
+##introducing some handy functions and signals.
 ##
-##func _on_update(code: error_code): #called when dialogue updates
-##	print(code)
+##Create a Dialogue box, design it and sets its properties. Then you can load in
+##any text you want or store a text buffer. Using the [code]update[/code] and
+##[code]end[/code] signals you can monitor its behavior and add extra functionality.
 ##
-##func _on_end(): #called when end of buffer is reached
-##	queue_free()
-##[/codeblock]
+##Supports formatting and custom Callables!
 
 extends RichTextLabel
 
@@ -18,9 +13,9 @@ class_name Dialogue
 
 ##Emits an update whenever the [code]error_code[/code] gets updated. Relevant if you need to track
 ##the status of the dialogue text.
-signal Update(code: error_code)
+signal update(code: error_code)
 ##Emits when the end of the dialogue buffer is reached. Can be used to close the Dialogue box.
-signal End
+signal end
 
 ##Possible error codes while processing dialogue text.
 enum error_code {
@@ -34,12 +29,16 @@ enum error_code {
 var current_code: error_code:
 	set(value):
 		current_code = value
-		Update.emit(current_code)
+		update.emit(current_code)
 		if current_code == error_code.END:
-			End.emit()
+			end.emit()
 
 ##Can take any Dictionary to format the Dialogue strings.
 var format_dictionary: Dictionary = {}
+
+##By defaults tries to execute custom callables on itself, but can be directed to
+##a different Node to handle the callables. Allows for more flexibility.
+var custom_callables_target: Node = self
 
 ##Array of text that gets loaded into the Dialogue. Use func [code]Buffer(new_dialogue_buffer)[/code]
 ##instead of accessing this directly (unless you need to read data from it).
@@ -49,6 +48,20 @@ var dialogue_buffer: PackedStringArray = []
 @export_range(0.1,3.0,0.1,"or_greater") var animation_speed: float = 0.5
 ##Should the next dialogue text wait for the current animation to finish.
 @export var await_animation: bool = false
+##When a line of Dialogue starts with this Prefix, it'll instead try to execute the following Callable.
+##Use this Prefix twice in order to also jump to the next line of Dialogue.
+##[codeblock]
+##var my_text: PackedStringArray = ["one","//call_me","two","////call_me","three"]
+##func call_me():
+##	print("called")
+##Buffer(my_text)
+##
+##Next() #Displays "one"
+##Next() #Prints "called"
+##Next() #Displays "two"
+##Next() #Prints "called" and Displays "three"
+##[/codeblock]
+@export var custom_callable: String = "//"
 
 ##Pass in a string of text to display in the Dialogue.
 ##[codeblock]
@@ -58,6 +71,24 @@ var dialogue_buffer: PackedStringArray = []
 func Display(new_dialogue_text: String) -> error_code:
 	if await_animation and current_code == error_code.IN_ANIMATION:
 		return current_code
+	
+	if new_dialogue_text.left(custom_callable.length()*2) == custom_callable + custom_callable:
+		var callable_string: String = new_dialogue_text.lstrip(custom_callable + custom_callable)
+		if custom_callables_target.has_method(callable_string):
+			custom_callables_target.call(callable_string)
+			call_deferred("Next")
+			return current_code
+		call_deferred("Next")
+		push_error("Callable ",callable_string, " not found in ", custom_callables_target)
+		return error_code.ERROR
+	
+	elif new_dialogue_text.left(custom_callable.length()) == custom_callable:
+		var callable_string: String = new_dialogue_text.lstrip(custom_callable)
+		if custom_callables_target.has_method(callable_string):
+			custom_callables_target.call(callable_string)
+			return current_code
+		push_error("Callable ",callable_string, " not found in ", custom_callables_target)
+		return error_code.ERROR
 	
 	clear()
 	current_code = error_code.START
