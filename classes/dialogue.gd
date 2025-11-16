@@ -5,16 +5,22 @@
 ##Buffer(PackedStringArray) #load a dialogue buffer
 ##Next() #display next dialogue string in buffer
 ##
-##func Update(code: error_code): #called when dialogue updates
+##func _on_update(code: error_code): #called when dialogue updates
 ##	print(code)
 ##
-##func End(): #called when end of buffer is reached
+##func _on_end(): #called when end of buffer is reached
 ##	queue_free()
 ##[/codeblock]
 
 extends RichTextLabel
 
 class_name Dialogue
+
+##Emits an update whenever the [code]error_code[/code] gets updated. Relevant if you need to track
+##the status of the dialogue text.
+signal Update(code: error_code)
+##Emits when the end of the dialogue buffer is reached. Can be used to close the Dialogue box.
+signal End
 
 ##Possible error codes while processing dialogue text.
 enum error_code {
@@ -28,9 +34,9 @@ enum error_code {
 var current_code: error_code:
 	set(value):
 		current_code = value
-		Update(current_code)
+		Update.emit(current_code)
 		if current_code == error_code.END:
-			End()
+			End.emit()
 
 ##Can take any Dictionary to format the Dialogue strings.
 var format_dictionary: Dictionary = {}
@@ -39,7 +45,6 @@ var format_dictionary: Dictionary = {}
 ##instead of accessing this directly (unless you need to read data from it).
 var dialogue_buffer: PackedStringArray = []
 
-@export_group("Dialogue Text Control")
 @export var animated_text: bool = false
 @export_range(0.1,3.0,0.1,"or_greater") var animation_speed: float = 0.5
 ##Should the next dialogue text wait for the current animation to finish.
@@ -115,12 +120,3 @@ func Next() -> error_code:
 	Display(next_dialogue_string)
 		
 	return error_code.DONE
-
-##Emits an update whenever the [code]error_code[/code] gets updated. Relevant if you need to track
-##the status of the dialogue text.
-func Update(code: error_code) -> void:
-	pass
-
-##Emits when the end of the dialogue buffer is reached. Can be used to close the Dialogue box.
-func End() -> void:
-	pass
