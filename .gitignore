@@ -2,6 +2,7 @@
 .godot/
 .nomedia
 .uid
+.md.uid
 
 # Godot-specific ignores
 .import/
