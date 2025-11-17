@@ -116,6 +116,7 @@ func Display(new_dialogue_text: String) -> error_code:
 ##var new_buffer: String = "Hello world!\nHow are you?"
 ##
 ##Buffer(new_buffer)
+##[/codeblock]
 func Buffer(new_dialogue_buffer: Variant, append_to_existing: bool = true) -> error_code:
 	if !append_to_existing: dialogue_buffer.clear()
 	match typeof(new_dialogue_buffer):

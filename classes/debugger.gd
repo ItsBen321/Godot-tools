@@ -1,6 +1,5 @@
 ##Custom debugger to log any sort of data, stats or text you want. Has simple instructions
-##to get, find, save and load data. Can be created as an autoload script, instantiated at runtime
-##or put in separate Nodes!
+##to get, find, save and load data. Can be created as a custom resource or instantiated at runtime!
 ##
 ##To access from anywhere it's recommended to either create a Debugger autoload or instantiate one
 ##in an existing autoload file. From there you can call add_line() with any info you want.
@@ -10,10 +9,9 @@
 ##There is a normal debug_log with all the variables, and a text-converted string_log.
 ##Below is an example of how to set up a Debugger.
 ##[codeblock]
-##var DB: Debugger
+##var DB: Debugger = Debugger.new()
 ##
 ##func _ready() -> void:
-##	DB = Debugger.new()
 ##	DB.max_lines = 2000
 ##	DB.print_lines = true
 ##	DB.string_log_separation_length = 3
@@ -24,9 +22,9 @@
 ##DB.add_line(name, age, height) #adds a line to the log
 ##var indices: PackedInt32Array = DB.find_lines("Bob") #finds the index of all lines containing that Variant
 ##var first_Bob: Array = DB.get_line(indices[0]) #returns the line at index number
-##DB.save_debug_log() #saves the log to a txt file at specified location.
+##DB.save_debug_log() #saves the log to a *.txt file at specified location, can also save as *.csv
 
-extends Node
+extends Resource
 
 class_name Debugger
 
