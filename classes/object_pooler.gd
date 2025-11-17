@@ -81,8 +81,7 @@ func reset():
 ##When no PackedScene is added in this function, it tries to takes the default object set
 ##in the inspector (or through code). Returns an error code for troubleshooting.
 func start(the_object: PackedScene = object) -> error_code:
-	if the_object == null or \
-	typeof(the_object) != typeof(object):
+	if the_object == null:
 		push_error("No valid object (",the_object,") given for ObjectPooler: ",self)
 		return error_code.INVALID_OBJECT
 	if enabled or !object_pool.is_empty():

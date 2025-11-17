@@ -135,8 +135,9 @@ func save_debug_log(add_timestamp_to_path: bool = true) -> Error:
 ##You can disable timestamp to overwrite the same log every time, unless you dynamically change
 ##the save_path.
 func save_debug_log_csv(add_timestamp_to_path: bool = true, delimiter: String = ",") -> Error:
-	var new_save_path: String = "%s/%s Log" % [save_path,ProjectSettings.get_setting("application/config/name")]
-	if add_timestamp_to_path: new_save_path += " : %s"%Time.get_datetime_string_from_system(false,true).replace(":","-")
+	var new_save_path: String = "%s/%s_Log" % [save_path,ProjectSettings.get_setting("application/config/name")]
+	if add_timestamp_to_path: new_save_path = "%s_%s" % [
+		new_save_path,Time.get_datetime_string_from_system(false,true).replace(":","-")]
 	var file := FileAccess.open("%s.csv" % new_save_path,FileAccess.WRITE)
 	
 	if file == null:
