@@ -6,4 +6,4 @@ New classes to simplify my game-making process. Usually small tweaks and optimiz
 Simply put these scripts in your project, read the documentation and you're good to go!
 
 ## Tools
-Also consists classes, but there are less game-related and more for the development process.
+Also consists of classes, but these are less game-related and more for the development process.
