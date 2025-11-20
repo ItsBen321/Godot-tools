@@ -8,6 +8,8 @@
 ##optional timestamp as index 0 and 1 on the Array. Added logs send a [code]log_added[/code] signal.
 ##There is a normal debug_log with all the variables, and a text-converted string_log.
 ##Below is an example of how to set up a Debugger.
+##
+##@tutorial(Short overview): https://youtu.be/3JpCy9vs880
 ##[codeblock]
 ##var DB: Debugger = Debugger.new()
 ##

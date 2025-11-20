@@ -1,9 +1,11 @@
-##Static Class, can't instantiate.
+##Abstract Class, can't instantiate.
 ##
 ##Used for debugging and understanding complex Dictionaries / Arrays.
 ##Simply call [code]Deconstruct.go(my_var)[/code] in your script at runtime, output is in the terminal.
 ##Or get a visual popup window by calling [code]Deconstruct.go(my_var, get_tree())[/code] in your script.
 ##Better result if embedded subwindows is turned off in Project Settings.
+##
+##@tutorial(Short overview): https://youtu.be/l1Eq7W2A0IA
 @abstract
 class_name Deconstruct
 
@@ -15,7 +17,8 @@ static var window: Window
 ##This is simply to minimize the output when things are very nested.
 static func go(input: Variant, layers: int = 10):
 	popup = false
-	match typeof(input):
+	var the_type: int = _check_array(input)
+	match the_type:
 		TYPE_DICTIONARY:
 			_init_deconstruct()
 			_deconstruct_dict(input, layers+1)
@@ -34,7 +37,8 @@ static func go(input: Variant, layers: int = 10):
 static func go_popup(input: Variant, tree: SceneTree, layers: int = 10):
 	popup = true
 	var root: Window = tree.root
-	match typeof(input):
+	var the_type: int = _check_array(input)
+	match the_type:
 		TYPE_DICTIONARY:
 			var parent: Node = _init_popup_deconstruct(root)
 			_deconstruct_dict(input, layers+1, parent)
@@ -96,7 +100,8 @@ static func _deconstruct_dict(dict, layers, parent: Node = null):
 	layers -= 1
 	
 	for item in dict.keys():
-		match typeof(dict[item]):
+		var the_type: int = _check_array(dict[item])
+		match the_type:
 			TYPE_DICTIONARY:
 				var new_parent: Node = null
 				if popup:
@@ -130,7 +135,8 @@ static func _deconstruct_array(array, layers, parent: Node = null):
 	layers -= 1
 	
 	for item in array:
-		match typeof(item):
+		var the_type: int = _check_array(item)
+		match the_type:
 			TYPE_DICTIONARY:
 				var new_parent: Node = null
 				if popup:
@@ -151,3 +157,11 @@ static func _deconstruct_array(array, layers, parent: Node = null):
 					print_rich("[color=GREEN_YELLOW]%s﹂▶ [i]%s[/i] (%s)[/color]"%["\t".repeat(offset),str(item),type_string(typeof(item))])
 	offset -= 1
 	layers += 1
+
+static func _check_array(type: Variant) -> int:
+	if typeof(type) in [TYPE_ARRAY,TYPE_PACKED_BYTE_ARRAY,TYPE_PACKED_COLOR_ARRAY,
+	TYPE_PACKED_INT32_ARRAY,TYPE_PACKED_INT64_ARRAY,TYPE_PACKED_STRING_ARRAY,
+	TYPE_PACKED_FLOAT32_ARRAY,TYPE_PACKED_FLOAT64_ARRAY,TYPE_PACKED_VECTOR2_ARRAY,
+	TYPE_PACKED_VECTOR3_ARRAY,TYPE_PACKED_VECTOR4_ARRAY]:
+		return TYPE_ARRAY
+	return typeof(type)

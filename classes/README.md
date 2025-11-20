@@ -17,3 +17,9 @@ Improves performance by reusing the same repetitive scenes instead of having to 
 Mainly designed for quick visual effects. Supports auto-starting or can be dynamically changed at runtime.
 Also allows to recall _ready() and _exit() whenever you call take() or put() on the ObjectPooler.
 [Short Overview](https://youtu.be/o_nSrP_DHVk)
+
+## SimpleAnimation
+The fastest way to add animations to your nodes! Can be tested in the editor and has a few templates.
+Simple add a SimpleAnimation node to an existing node and you're good to go.
+Offers some extra settings and customization if desired.
+[Short Overview](https://youtu.be/zw1sAL_B5Rc)

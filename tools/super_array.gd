@@ -1,6 +1,10 @@
 ##Array Object that nests multiple sub-arrays, extra utility and more functionality.
+##
 ##Every Array value also has a Key (String), Weight (float), Lock (bool) and Extra (Variant).
 ##Could be seen as a dictionary, but these sub-arrays seemlessly interact with eachother.
+##
+##@tutorial(Short overview): https://youtu.be/EVGFeJMQArM
+##@experimental
 
 extends Object
 
@@ -86,7 +90,6 @@ func append_array(array: Array) -> void:
 	data.main.append_array(array)
 	_calc.fill_empty()
 	_calc.check()
-
 
 ##Appends another SuperArray at the end of this SuperArray.
 func append_super_array(super_array: SuperArray) -> void:
@@ -332,6 +335,7 @@ func values(index_array: PackedInt32Array = [], respect_locks: bool = false) -> 
 	return values_array
 	
 	
+##
 ##Returns the value in SuperArray for specific value in data. Skips over locks.
 ##[codeblock]
 ###Can be used to fetch a variable by key.
@@ -528,6 +532,7 @@ func pick_random_weighted() -> Variant:
 	for item in temp_array:
 		temp_weight_array.append(weight_from_value(item))
 	var rng: RandomNumberGenerator = RandomNumberGenerator.new()
+	rng.randomize()
 	var rand_index: int = rng.rand_weighted(temp_weight_array)
 	_calc.check()
 	return temp_array[rand_index]

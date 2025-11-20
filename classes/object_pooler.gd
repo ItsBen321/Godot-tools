@@ -7,6 +7,8 @@
 ##
 ##Can be created as a custom resource or instantiated at runtime! When preloading as a custom
 ##resource, you can set auto_start and an object as PackedScene.
+##
+##@tutorial(Short overview): https://youtu.be/o_nSrP_DHVk
 ##[codeblock]
 ##var MyPool: ObjectPooler = ObjectPooler.new()
 ##

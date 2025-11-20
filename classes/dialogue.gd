@@ -1,11 +1,14 @@
 ##Simple way to turn a RichTextLabel into a Dialogue box,
 ##introducing some handy functions and signals.
 ##
+##Easy to use RichTextEdit made to process dialogue.
+##
 ##Create a Dialogue box, design it and sets its properties. Then you can load in
 ##any text you want or store a text buffer. Using the [code]update[/code] and
 ##[code]end[/code] signals you can monitor its behavior and add extra functionality.
-##
 ##Supports formatting and custom Callables!
+##
+##@tutorial(Short overview): https://youtu.be/SkvXWE56ngQ
 
 extends RichTextLabel
 
