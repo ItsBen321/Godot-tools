@@ -30,3 +30,8 @@ Utilizing resources like the FileManager and FilePresets to set everything up.
 Has simple customization features, fully compresses and decompresses data, catches any errors without crashing,
 handles sessions for conditional saving/loading, and more!
 [Short Overview](https://youtu.be/rRb1tghKKHY)
+
+## Scenes
+Simple way to visually set up a scene structure, change behaviour and condense ALL your code in 1 single line!
+Has some simple implemented algorithms to clearly switch from any place into a scene tree to another.
+[Short Overview](https://youtu.be/COHsEbzNF08)

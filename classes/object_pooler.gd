@@ -98,6 +98,7 @@ func start(the_object: PackedScene = object) -> error_code:
 		var new_object := object.instantiate()
 		new_object.set_process(false)
 		new_object.set_physics_process(false)
+		new_object.set_process_input(false)
 		object_pool.append(new_object)
 	enabled = true
 		
@@ -123,6 +124,7 @@ func take() -> Node:
 	else:
 		return_object.set_process(true)
 		return_object.set_physics_process(true)
+		return_object.set_process_input(true)
 	
 	if always_call_ready:
 		return_object.request_ready()
@@ -146,4 +148,5 @@ func put(put_object: Node):
 		put_object.get_parent().remove_child(put_object)
 	put_object.set_process(false)
 	put_object.set_physics_process(false)
+	put_object.set_process_input(false)
 	object_pool.push_back(put_object)
