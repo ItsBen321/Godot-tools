@@ -95,7 +95,10 @@ func start(the_object: PackedScene = object) -> error_code:
 		
 	object = the_object.duplicate()
 	for amount in size:
-		object_pool.append(object.instantiate())
+		var new_object := object.instantiate()
+		new_object.set_process(false)
+		new_object.set_physics_process(false)
+		object_pool.append(new_object)
 	enabled = true
 		
 	return error_code.DONE
@@ -117,6 +120,9 @@ func take() -> Node:
 	if !is_instance_valid(return_object):
 		push_error("Returned object (",return_object,") from ObjectPooler (",self,") is not valid.")
 		return null
+	else:
+		return_object.set_process(true)
+		return_object.set_physics_process(true)
 	
 	if always_call_ready:
 		return_object.request_ready()
@@ -138,4 +144,6 @@ func put(put_object: Node):
 		return
 	if is_instance_valid(put_object.get_parent()):
 		put_object.get_parent().remove_child(put_object)
+	put_object.set_process(false)
+	put_object.set_physics_process(false)
 	object_pool.push_back(put_object)

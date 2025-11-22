@@ -23,3 +23,10 @@ The fastest way to add animations to your nodes! Can be tested in the editor and
 Simple add a SimpleAnimation node to an existing node and you're good to go.
 Offers some extra settings and customization if desired.
 [Short Overview](https://youtu.be/zw1sAL_B5Rc)
+
+## Files
+Custom file manager to minimize the amount of code required for consistent and fail-proof saving and loading.
+Utilizing resources like the FileManager and FilePresets to set everything up.
+Has simple customization features, fully compresses and decompresses data, catches any errors without crashing,
+handles sessions for conditional saving/loading, and more!
+[Short Overview](https://youtu.be/rRb1tghKKHY)
